@@ -1,0 +1,372 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador Profesional de URLs</title>
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background-image: url('https://img.freepik.com/vector-gratis/secuencia-vector-diseno-codigo-binario_53876-164420.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.85);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .input-url {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 2px solid #444;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+        }
+
+        .button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .button-danger {
+            background-color: #dc3545;
+        }
+
+        .button:hover {
+            background-color: #218838;
+        }
+
+        .button-danger:hover {
+            background-color: #c82333;
+        }
+
+        .ip-address {
+            font-family: 'Courier New', Courier, monospace;
+            color: red;
+            font-size: 28px;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+            margin-top: 10px;
+        }
+
+        .result {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #222;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow: auto;
+            font-size: 16px;
+        }
+
+        .alerta {
+            background-color: rgba(255, 0, 0, 0.8);
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .history {
+            margin-top: 30px;
+            width: 100%;
+            max-height: 250px;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .history-item {
+            background-color: #333;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .input-url {
+                padding: 12px;
+            }
+
+            .button {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="alerta">
+        ⚠️ Nota: Si actualizas la página, se perderá el análisis actual.
+    </div>
+
+    <div class="container">
+        <h1>Analizador Profesional de URLs</h1>
+        
+        <div id="ipAddress" class="ip-address">IP: Cargando...</div>
+        
+        <input id="urlInput" type="text" class="input-url" placeholder="Ingresa la URL para analizar...">
+        
+        <button class="button" onclick="analizarURL()">Analizar URL</button>
+        <button class="button button-danger" onclick="limpiarFormulario()">Limpiar</button>
+        
+        <div id="result" class="result">Los resultados del análisis aparecerán aquí...</div>
+        
+        <button class="button" onclick="descargarResultado()">Descargar Informe</button>
+        
+        <div class="history">
+            <h3>Historial de Análisis</h3>
+            <div id="history"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // Funciones de análisis adicionales
+        const analisisFunciones = [
+            // Análisis existentes
+            function validarEstructuraURL(url) {
+                const regex = /^(https?:\/\/)?([\w\d\.-]+)\.([a-z\.]{2,6})(\/[\w\.-]*)*\/?$/;
+                return regex.test(url) ? "✔️ Estructura de URL válida." : "❌ Estructura de URL no válida.";
+            },
+            function detectarHTTPS(url) {
+                return url.startsWith("https://") ? "✔️ La URL usa HTTPS, es seguro." : "❌ La URL no usa HTTPS.";
+            },
+            function verificarParametros(url) {
+                try {
+                    const urlObj = new URL(url);
+                    const params = urlObj.searchParams;
+                    let resultado = "Parámetros en la URL:\n";
+                    
+                    if ([...params].length === 0) {
+                        resultado += "✔️ La URL no contiene parámetros.";
+                    } else {
+                        params.forEach((value, key) => {
+                            resultado += `${key} = ${value}\n`;
+                        });
+                    }
+                    
+                    return resultado;
+                } catch (error) {
+                    return "❌ URL no válida para verificar parámetros.";
+                }
+            },
+            function verificarSubdominio(url) {
+                const dominio = extraerDominio(url);
+                const subdominio = dominio.split(".")[0];
+                return (subdominio && subdominio.length > 5) ? `⚠️ Subdominio largo o sospechoso detectado: ${subdominio}` : "✔️ Subdominio parece seguro.";
+            },
+            function detectarURLAcortada(url) {
+                return (url.includes("bit.ly") || url.includes("t.co") || url.includes("tinyurl")) ? "⚠️ La URL parece estar acortada." : "✔️ La URL no está acortada.";
+            },
+
+            // Nuevos análisis:
+            function verificarCaracteresEspeciales(url) {
+                const regex = /[!@#\$%\^\&*\)\(+=._-]+/;
+                return regex.test(url) ? "⚠️ La URL contiene caracteres especiales." : "✔️ La URL no contiene caracteres especiales.";
+            },
+            function verificarLongitudURL(url) {
+                return url.length < 2083 ? "✔️ Longitud de la URL dentro del rango permitido." : "⚠️ Longitud de la URL excesiva.";
+            },
+            function verificarExistenciaURL(url) {
+                try {
+                    const request = new XMLHttpRequest();
+                    request.open('HEAD', url, false);
+                    request.send();
+                    return request.status === 200 ? "✔️ La URL responde correctamente." : "⚠️ La URL no responde correctamente.";
+                } catch (e) {
+                    return "❌ No se pudo comprobar la URL.";
+                }
+            },
+            function detectarDominioPeligroso(url) {
+                const dominiosPeligrosos = ["example.com", "phishing.com", "malicious.com"]; // Lista de ejemplo
+                const dominio = extraerDominio(url);
+                return dominiosPeligrosos.includes(dominio) ? "⚠️ Dominio peligroso detectado." : "✔️ Dominio seguro.";
+            },
+            function verificarSubrutasSospechosas(url) {
+                const subrutasSospechosas = ["/admin", "/config", "/login"];
+                const urlObj = new URL(url);
+                const path = urlObj.pathname;
+                for (const subruta of subrutasSospechosas) {
+                    if (path.includes(subruta)) {
+                        return `⚠️ Subruta sospechosa detectada: ${subruta}`;
+                    }
+                }
+                return "✔️ No se detectaron subrutas sospechosas.";
+            },
+            function detectarURLConEncriptacion(url) {
+                return url.includes("?token=") || url.includes("?key=") ? "⚠️ La URL contiene parámetros encriptados." : "✔️ La URL no contiene encriptación visible.";
+            },
+            function analizarCaracteresNoASCII(url) {
+                const regex = /[^\x00-\x7F]/;
+                return regex.test(url) ? "⚠️ La URL contiene caracteres no ASCII." : "✔️ La URL no contiene caracteres no estándar.";
+            },
+            function verificarAccesibilidadSitio(url) {
+                return url.includes("404") ? "⚠️ La URL redirige a una página no encontrada." : "✔️ La URL parece accesible.";
+            },
+            function detectarScriptsPotencialmentePeligrosos(url) {
+                return url.includes("javascript:") ? "⚠️ La URL contiene un script potencialmente peligroso." : "✔️ No se detectaron scripts peligrosos.";
+            },
+            function verificarRedesSociales(url) {
+                const redesSociales = ["facebook.com", "twitter.com", "instagram.com", "linkedin.com"];
+                const dominio = extraerDominio(url);
+                return redesSociales.some(red => dominio.includes(red)) ? "⚠️ La URL pertenece a una red social." : "✔️ La URL no pertenece a una red social.";
+            },
+
+            // Nuevas funciones:
+            function verificarCodigoEstadoHTTP(url) {
+                try {
+                    const request = new XMLHttpRequest();
+                    request.open('GET', url, false);
+                    request.send();
+                    return request.status === 200 ? "✔️ Respuesta HTTP 200 (OK)." : `⚠️ Código de estado HTTP: ${request.status}`;
+                } catch (e) {
+                    return "❌ Error al verificar código de estado.";
+                }
+            },
+            function verificarRedireccionHTTPS(url) {
+                const httpUrl = url.replace(/^http:\/\//, 'https://');
+                return httpUrl === url ? "✔️ La URL no requiere redirección a HTTPS." : "⚠️ La URL redirige a HTTPS.";
+            },
+            function verificarMetaTags(url) {
+                return fetch(url)
+                    .then(response => response.text())
+                    .then(text => {
+                        return text.includes('<meta name="description"') ? "✔️ Meta descripción encontrada." : "⚠️ Meta descripción no encontrada.";
+                    });
+            },
+            function verificarHeaderSeguridad(url) {
+                return fetch(url, { method: 'HEAD' })
+                    .then(response => {
+                        const headers = response.headers;
+                        return headers.has('X-Content-Type-Options') ? "✔️ Header de seguridad encontrado (X-Content-Type-Options)." : "⚠️ Header de seguridad no encontrado.";
+                    });
+            },
+            function verificarCORS(url) {
+                return fetch(url, { method: 'HEAD' })
+                    .then(response => {
+                        return response.headers.has('Access-Control-Allow-Origin') ? "✔️ CORS habilitado." : "⚠️ CORS no habilitado.";
+                    });
+            }
+        ];
+
+        async function analizarURL() {
+            const url = document.getElementById('urlInput').value.trim();
+            let resultados = "";
+
+            for (const func of analisisFunciones) {
+                resultados += await func(url) + "\n";
+                document.getElementById('result').innerText = resultados;
+                await new Promise(resolve => setTimeout(resolve, 3000)); // Pausa de 3 segundos entre análisis
+            }
+
+            obtenerIP(url);
+            actualizarHistorial(url, resultados);
+        }
+
+        // Función para extraer el dominio de la URL
+        function extraerDominio(url) {
+            const match = url.match(/^(https?:\/\/)?([\w\d\.-]+)\.([a-z\.]{2,6})/);
+            return match ? match[2] + "." + match[3] : 'Dominio no encontrado';
+        }
+
+        // Obtener la IP de la URL
+        function obtenerIP(url) {
+            const dominio = extraerDominio(url);
+            fetch(`http://ip-api.com/json/${dominio}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.query) {
+                        document.getElementById('ipAddress').innerText = `IP: ${data.query} (Ubicación: ${data.city}, ${data.country})`;
+                    } else {
+                        document.getElementById('ipAddress').innerText = "IP no encontrada";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener IP:', error);
+                    document.getElementById('ipAddress').innerText = "IP no encontrada";
+                });
+        }
+
+        // Limpiar formulario
+        function limpiarFormulario() {
+            document.getElementById('urlInput').value = '';
+            document.getElementById('result').innerText = 'Los resultados del análisis aparecerán aquí...';
+            document.getElementById('ipAddress').innerText = 'IP: Cargando...';
+        }
+
+        // Descargar los resultados
+        function descargarResultado() {
+            const contenido = document.getElementById('result').innerText;
+            const blob = new Blob([contenido], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'resultado_analisis.txt';
+            link.click();
+        }
+
+        // Actualizar historial
+        function actualizarHistorial(url, resultados) {
+            const historyDiv = document.getElementById('history');
+            const nuevoElemento = document.createElement('div');
+            nuevoElemento.classList.add('history-item');
+            nuevoElemento.textContent = `${url} - ${new Date().toLocaleString()}`;
+            historyDiv.appendChild(nuevoElemento);
+        }
+    </script>
+
+</body>
+</html>
