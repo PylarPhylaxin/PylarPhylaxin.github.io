@@ -1,146 +1,197 @@
-<!DOCTYPE html> 
-<html lang="es">
 <head>
-    
     <meta charset="UTF-8">
-
     <meta name='admaven-placement' content="Bqdr6rTgF">
     <script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1116103"></script>
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analizador Profesional de URLs</title>
-    
 
     <style>
-        /* Estilos generales */
+        /* Reset y estilo general */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
 
+        /* Estilo de fondo y estructura del cuerpo */
         body {
-            font-family: Arial, sans-serif;
             background-color: #121212;
-            color: white;
+            color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             min-height: 100vh;
-            background-image: url('https://img.freepik.com/vector-gratis/secuencia-vector-diseno-codigo-binario_53876-164420.jpg');
+            background-image: url('https://media.istockphoto.com/id/1788319112/es/foto/tecnolog%C3%ADa-global-de-ia.webp?b=1&s=612x612&w=0&k=20&c=85wtbMGVsb0Ujjrrw-v6kxwLU2GBxVvj149-EppC_Zc=');
             background-size: cover;
             background-position: center;
             padding: 20px;
+            overflow-y: auto;
         }
 
+        /* Título principal */
         h1 {
-            font-size: 36px;
+            font-size: 2.8rem;
+            color: #ffffff;
             margin-bottom: 20px;
-            color: #fff;
             text-align: center;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
+        /* Contenedor principal */
         .container {
-            background-color: rgba(0, 0, 0, 0.85);
+            background-color: rgba(20, 20, 20, 0.9);
             width: 100%;
-            max-width: 800px;
+            max-width: 750px;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
             margin-top: 50px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             overflow-y: auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Campo de entrada de URL */
         .input-url {
             width: 100%;
             padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 2px solid #444;
-            background-color: #333;
-            color: white;
-            font-size: 16px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 2px solid #555;
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
+        .input-url:focus {
+            border-color: #28a745;
+            background-color: #333;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+            outline: none;
+        }
+
+        /* Botones */
         .button {
             width: 100%;
             padding: 15px;
-            border-radius: 5px;
-            background-color: #28a745;
+            margin-top: 12px;
+            border-radius: 8px;
             border: none;
-            color: white;
+            background-color: #28a745;
+            color: #ffffff;
             font-weight: bold;
+            font-size: 1.1rem;
             cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s;
-            margin-top: 10px;
-        }
-
-        .button-danger {
-            background-color: #dc3545;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 128, 0, 0.3);
         }
 
         .button:hover {
             background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 128, 0, 0.4);
+        }
+
+        .button-danger {
+            background-color: #dc3545;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
         }
 
         .button-danger:hover {
             background-color: #c82333;
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
         }
 
+        /* Dirección IP */
         .ip-address {
             font-family: 'Courier New', Courier, monospace;
-            color: red;
-            font-size: 28px;
-            text-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+            color: #ff4c4c;
+            font-size: 1.8rem;
+            text-shadow: 0 0 8px rgba(255, 76, 76, 0.8);
             margin-top: 10px;
         }
 
+        /* Resultados */
         .result {
-            margin-top: 20px;
             width: 100%;
-            padding: 10px;
+            margin-top: 20px;
+            padding: 20px;
             background-color: #222;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #e0e0e0;
             white-space: pre-wrap;
             overflow: auto;
-            font-size: 16px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
+        .result:hover {
+            background-color: #292929;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Alerta */
         .alerta {
-            background-color: rgba(255, 0, 0, 0.8);
-            padding: 10px;
+            background-color: rgba(255, 0, 0, 0.85);
+            padding: 15px;
             margin-top: 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             width: 100%;
             text-align: center;
+            font-weight: bold;
+            color: #ffffff;
         }
 
+        /* Historial */
         .history {
             margin-top: 30px;
             width: 100%;
             max-height: 250px;
             overflow-y: auto;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 5px;
+            background-color: rgba(30, 30, 30, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.5);
         }
 
         .history-item {
             background-color: #333;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            color: #dcdcdc;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
+        .history-item:hover {
+            background-color: #3a3a3a;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsivo */
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
             }
 
             .input-url {
@@ -149,73 +200,301 @@
 
             .button {
                 padding: 12px;
-                font-size: 16px;
+                font-size: 0.95rem;
+            }
+
+            .ip-address {
+                font-size: 1.6rem;
             }
         }
     </style>
 </head>
+
 <body>
 
     <div class="alerta">
-        ⚠️ Nota: Si actualizas la página, se perderá el análisis actual.
+        ⚠️ <strong>Importante:</strong> Si actualizas la página, los resultados actuales del análisis se perderán.
     </div>
+    
 
     <div class="container">
-        <h1>Analizador Profesional de URLs</h1>
-        
-        <div id="ipAddress" class="ip-address">IP: Cargando...</div>
-        
-        <input id="urlInput" type="text" class="input-url" placeholder="Ingresa la URL para analizar...">
-        
-        <button class="button" onclick="analizarURL()">Analizar URL</button>
-        <button class="button button-danger" onclick="limpiarFormulario()">Limpiar</button>
-        
-        <div id="result" class="result">Los resultados del análisis aparecerán aquí...</div>
-        
-        <button class="button" onclick="descargarResultado()">Descargar Informe</button>
-        
-        <div class="history">
-            <h3>Historial de Análisis</h3>
-            <div id="history"></div>
+        <!-- Encabezado Principal -->
+        <header class="header">
+            <h1 class="title">🔍 Analizador De URLs</h1>
+            <div id="ipAddress" class="ip-address">IP: Cargando...</div>
+        </header>
+    
+        <!-- Sección de Entrada de URL -->
+        <section class="input-section">
+            <label for="urlInput" class="input-label">URL a analizar:</label>
+            <input id="urlInput" type="text" class="input-url" placeholder="Ingresa la URL para analizar...">
+            <div class="button-group">
+                <button class="button analyze-button" onclick="analizarURL()">🔍 Analizar URL</button>
+                <button class="button clear-button" onclick="limpiarFormulario()">🧹 Limpiar</button>
+            </div>
+        </section>
+    
+        <!-- Sección de Alerta (opcional, solo visible en ciertas situaciones) -->
+        <div class="alerta" id="alerta" style="display: none;">
+            ⚠️ <strong>Atención:</strong> Si actualizas la página, se perderán los resultados actuales del análisis.
         </div>
-
+    
+        <!-- Resultados del Análisis -->
+        <section id="result" class="result">
+            <h2 class="result-title">📊 Resultado del Análisis</h2>
+            <div class="result-content">Los resultados del análisis aparecerán aquí...</div>
+        </section>
+    
+        <!-- Botón de Descarga -->
+        <div class="actions">
+            <button class="button download-button" onclick="descargarResultado()">📥 Descargar Informe</button>
+        </div>
+    
+        <!-- Sección de Historial -->
+        <section class="history-section">
+            <h3 class="history-title">🕘 Historial de Análisis</h3>
+            <div id="history" class="history-list">No hay análisis previos.</div>
+        </section>
     </div>
-
+    
     <script>
         // Funciones de análisis adicionales
         const analisisFunciones = [
             // Análisis existentes
             function validarEstructuraURL(url) {
-                const regex = /^(https?:\/\/)?([\w\d\.-]+)\.([a-z\.]{2,6})(\/[\w\.-]*)*\/?$/;
-                return regex.test(url) ? "✔️ Estructura de URL válida." : "❌ Estructura de URL no válida.";
-            },
-            function detectarHTTPS(url) {
-                return url.startsWith("https://") ? "✔️ La URL usa HTTPS, es seguro." : "❌ La URL no usa HTTPS.";
-            },
-            function verificarParametros(url) {
-                try {
-                    const urlObj = new URL(url);
-                    const params = urlObj.searchParams;
-                    let resultado = "Parámetros en la URL:\n";
-                    
-                    if ([...params].length === 0) {
-                        resultado += "✔️ La URL no contiene parámetros.";
-                    } else {
-                        params.forEach((value, key) => {
-                            resultado += `${key} = ${value}\n`;
-                        });
-                    }
-                    
-                    return resultado;
-                } catch (error) {
-                    return "❌ URL no válida para verificar parámetros.";
+    const regex = /^(https?:\/\/)?([a-z\d-]+(\.[a-z\d-]+)+)(:[\d]{1,5})?(\/[\w\.-]*)*\/?$/i;
+    
+    if (!url) return "❌ Error: No se proporcionó una URL.";
+
+    return regex.test(url)
+        ? "✔️ La estructura de la URL es válida."
+        : "❌ La estructura de la URL no es válida. Verifica que el formato sea correcto, como: 'https://www.ejemplo.com'";
+},
+
+async function detectarHTTPS(url) {
+    // Validación de la URL (garantizar que la entrada sea una cadena y que sea válida)
+    if (!url || typeof url !== 'string') {
+        return "❌ Error: No se proporcionó una URL válida.";
+    }
+
+    // Verificar si la URL está correctamente formateada
+    try {
+        const urlObj = new URL(url);  // Si la URL es malformada, se lanza un error
+    } catch (e) {
+        return "❌ Error: La URL proporcionada no es válida.";
+    }
+
+    // Verificar si la URL usa HTTPS con expresión regular
+    const regex = /^https:\/\//i;
+    if (!regex.test(url)) {
+        return "❌ La URL no usa HTTPS. 🛑 Esto podría exponer tus datos a ataques. Es recomendable usar HTTPS.";
+    }
+
+    // Verificación del certificado SSL del sitio (requiere consulta asincrónica)
+    try {
+        const isSecure = await verificarCertificadoSSL(url);
+        if (isSecure) {
+            return "✔️ La URL usa HTTPS y tiene un certificado SSL válido. Es segura.";
+        } else {
+            return "⚠️ La URL usa HTTPS pero el certificado SSL no es válido. Esto podría comprometer la seguridad.";
+        }
+    } catch (e) {
+        return "❌ No se pudo verificar el certificado SSL de la URL.";
+    }
+},
+
+// Función para verificar si la URL tiene un certificado SSL válido (requiere API externa)
+async function verificarCertificadoSSL(url) {
+    const domain = new URL(url).hostname;
+
+    try {
+        // Usamos una API externa como SSL Labs (ejemplo) para obtener información sobre el certificado
+        const apiUrl = `https://api.ssllabs.com/api/v3/analyze?host=${domain}`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        // Comprobamos si el certificado SSL está presente y es válido
+        if (data && data.endpoints && data.endpoints[0] && data.endpoints[0].status === "READY") {
+            return data.endpoints[0].grade !== "F";  // Si la calificación del certificado no es "F", es seguro
+        } else {
+            return false;  // Si no se puede verificar el SSL o está en proceso, lo consideramos inseguro
+        }
+    } catch (e) {
+        console.error("Error al verificar el certificado SSL:", e);
+        return false;  // Si la API falla, consideramos que el certificado no es válido
+    }
+},
+
+
+function verificarParametros(url) {
+    try {
+        // Verificar si la URL es válida y si el protocolo es http o https
+        const urlObj = new URL(url);
+        if (!['http:', 'https:'].includes(urlObj.protocol)) {
+            return "❌ La URL no utiliza un protocolo seguro (HTTP/HTTPS).";
+        }
+
+        const params = urlObj.searchParams;
+        let resultado = "Parámetros en la URL:\n";
+        
+        if ([...params].length === 0) {
+            resultado += "✔️ La URL no contiene parámetros.";
+        } else {
+            params.forEach((value, key) => {
+                // Aseguramos que las claves y valores sean seguros antes de mostrarlos
+                if (key && value) {
+                    resultado += `${key} = ${value}\n`;
                 }
-            },
-            function verificarSubdominio(url) {
-                const dominio = extraerDominio(url);
-                const subdominio = dominio.split(".")[0];
-                return (subdominio && subdominio.length > 5) ? `⚠️ Subdominio largo o sospechoso detectado: ${subdominio}` : "✔️ Subdominio parece seguro.";
-            },
+            });
+        }
+        
+        return resultado;
+    } catch (error) {
+        return "❌ URL no válida para verificar parámetros. Verifica que el formato sea correcto.";
+    }
+},
+
+function extraerDominio(url) {
+    // Verificar si la URL es una cadena no vacía
+    if (typeof url !== 'string' || url.trim() === '') {
+        return null; // Entrada no válida
+    }
+
+    // Intentar crear un objeto URL y extraer el dominio
+    try {
+        const urlObj = new URL(url);
+
+        // Asegurarse de que la URL tenga un protocolo válido (http, https, etc.)
+        if (!urlObj.protocol || !urlObj.hostname) {
+            return null; // Si no tiene protocolo o dominio, la URL es inválida
+        }
+
+        // Retornar el dominio de la URL (sin el protocolo)
+        return urlObj.hostname;
+    } catch (e) {
+        return null; // URL malformada o no válida
+    }
+},
+
+
+// Función mejorada para verificar el subdominio con validación de patrones sospechosos
+function verificarSubdominio(url) {
+    // Verificar que la URL sea válida
+    const dominio = extraerDominio(url);
+    if (!dominio) {
+        return "❌ URL no válida para verificar el subdominio.";
+    }
+
+    // Dividir el dominio en partes (subdominio, dominio principal, TLD)
+    const partes = dominio.split(".");
+
+    // Validar si la URL tiene al menos tres partes, lo que indica que podría haber un subdominio
+    if (partes.length > 2) {
+        const subdominio = partes[0];
+
+        // Comprobar si el subdominio tiene una longitud inusual (más de 5 caracteres)
+        if (subdominio.length > 5) {
+            return `⚠️ Subdominio largo o sospechoso detectado: ${subdominio}`;
+        }
+
+        // Lista de marcas conocidas (puedes ampliar esta lista)
+        const listaNegraSubdominios = new Set([
+            "paypal", "microsoft", "google", "amazon", "apple", "facebook", "twitter"
+        ]);
+
+        // Comprobación de subdominio con patrones sospechosos de marcas
+        if ([...listaNegraSubdominios].some(sub => subdominio.toLowerCase().includes(sub))) {
+            return `⚠️ Subdominio sospechoso que imita una marca conocida: ${subdominio}`;
+        }
+
+        // Otras verificaciones personalizadas pueden ser añadidas aquí, como patrones de phishing
+    }
+
+    // Si no se encuentran problemas, el subdominio parece seguro
+    return "✔️ Subdominio parece seguro.";
+},
+
+
+// Función mejorada para detectar URLs acortadas con verificación en listas negras
+function verificarSubdominio(url) {
+    // Verificar que la URL sea válida
+    const dominio = extraerDominio(url);
+    if (!dominio) {
+        return "❌ URL no válida para verificar el subdominio.";
+    }
+
+    // Validación avanzada para detectar subdominios maliciosos usando expresiones regulares
+    const regexMaliciosos = /(\d{1,3}\.){3}\d{1,3}|\%|\+|\&|\=|\.exe|\.js|\.com\.ru|\.cn|\.xyz|\.top/;
+    if (regexMaliciosos.test(dominio)) {
+        return "⚠️ Dominio o subdominio con patrones sospechosos detectados.";
+    }
+
+    // Dividir el dominio en partes (subdominio, dominio principal, TLD)
+    const partes = dominio.split(".");
+    const subdominio = partes.length > 2 ? partes[0] : null;
+
+    // Si no hay subdominio o la URL tiene una estructura inusual
+    if (!subdominio) {
+        return "✔️ No se detectó un subdominio, el dominio parece seguro.";
+    }
+
+    // Verificar la longitud del subdominio (más de 5 caracteres puede ser sospechoso)
+    if (subdominio.length > 5) {
+        return `⚠️ Subdominio largo o sospechoso detectado: ${subdominio}`;
+    }
+
+    // Lista negra de subdominios comunes de phishing o suplantación de identidad
+    const listaNegraSubdominios = new Set([
+        "paypal", "microsoft", "google", "amazon", "apple", "facebook", "twitter", "bank", "secure"
+    ]);
+
+    // Comprobación de subdominio con marcas conocidas (realiza búsqueda más flexible)
+    if ([...listaNegraSubdominios].some(blacklist => subdominio.toLowerCase().includes(blacklist))) {
+        return `⚠️ Subdominio sospechoso que imita una marca conocida: ${subdominio}`;
+    }
+
+    // Verificación de patrones de phishing que podrían tener subdominios con letras extrañas o combinaciones engañosas
+    const patronesPhishing = /(\w{1,3}\d{1,3})|([a-zA-Z]{2,3}\d{3,})/;
+    if (patronesPhishing.test(subdominio)) {
+        return "⚠️ Subdominio con patrón sospechoso detectado (posible intento de phishing).";
+    }
+
+    // Confirmación de que el subdominio parece seguro
+    return "✔️ Subdominio parece seguro.";
+},
+
+
+// Función de ejemplo que puede usar una API externa para verificar URLs maliciosas
+async function verificarMalicious(url) {
+    const apiUrl = `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=YOUR_API_KEY`;
+    const body = {
+        client: {
+            clientId: "your-client-id",
+            clientVersion: "1.0"
+        },
+        threatInfo: {
+            threatTypes: ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
+            platformTypes: ["ANY_PLATFORM"],
+            urlInfo: {
+                url: url
+            }
+        }
+    };
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        const data = await response.json();
+        return data.matches && data.matches.length > 0;
+    } catch (error) {
+        console.error("Error al verificar la URL:", error);
+        return false;
+    }
+},
+
             function detectarURLAcortada(url) {
                 return (url.includes("bit.ly") || url.includes("t.co") || url.includes("tinyurl")) ? "⚠️ La URL parece estar acortada." : "✔️ La URL no está acortada.";
             },
@@ -317,7 +596,7 @@
             for (const func of analisisFunciones) {
                 resultados += await func(url) + "\n";
                 document.getElementById('result').innerText = resultados;
-                await new Promise(resolve => setTimeout(resolve, 3000)); // Pausa de 3 segundos entre análisis
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Pausa de 3 segundos entre análisis
             }
 
             obtenerIP(url);
@@ -326,54 +605,267 @@
 
         // Función para extraer el dominio de la URL
         function extraerDominio(url) {
-            const match = url.match(/^(https?:\/\/)?([\w\d\.-]+)\.([a-z\.]{2,6})/);
-            return match ? match[2] + "." + match[3] : 'Dominio no encontrado';
+    try {
+        // Asegurarse de que la URL tenga el protocolo adecuado
+        if (!/^https?:\/\//i.test(url)) {
+            url = "https://" + url; // Si no tiene protocolo, agregar https por defecto
         }
+
+        // Crear un objeto URL para analizar la URL
+        const urlObj = new URL(url);
+
+        // Obtener el dominio completo (con subdominio si existe)
+        const dominioCompleto = urlObj.hostname;
+
+        // Verificar si el dominio es válido
+        if (!dominioCompleto) {
+            throw new Error("Dominio no encontrado.");
+        }
+
+        // Expresión regular para extraer dominio y subdominio (si existe)
+        const regex = /^([a-zA-Z0-9-]+\.)*([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(:[0-9]+)?$/;
+
+        const match = dominioCompleto.match(regex);
+
+        // Si el dominio es válido y coincide con la expresión regular, devolver el dominio
+        if (match) {
+            const subdominio = match[1] ? match[1].slice(0, -1) : null; // El subdominio está en el grupo 1
+            const dominioPrincipal = match[2]; // El dominio principal está en el grupo 2
+            const tld = dominioPrincipal.split('.').pop(); // El TLD es la última parte del dominio principal
+
+            return {
+                subdominio: subdominio || "No tiene subdominio",
+                dominioPrincipal,
+                tld,
+                dominioCompleto
+            };
+        } else {
+            throw new Error("Dominio no válido.");
+        }
+
+    } catch (e) {
+        return `❌ Error: ${e.message}`;
+    }
+}
 
         // Obtener la IP de la URL
         function obtenerIP(url) {
-            const dominio = extraerDominio(url);
-            fetch(`http://ip-api.com/json/${dominio}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.query) {
-                        document.getElementById('ipAddress').innerText = `IP: ${data.query} (Ubicación: ${data.city}, ${data.country})`;
-                    } else {
-                        document.getElementById('ipAddress').innerText = "IP no encontrada";
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al obtener IP:', error);
-                    document.getElementById('ipAddress').innerText = "IP no encontrada";
-                });
+    try {
+        // Validación de la URL antes de extraer el dominio
+        const dominio = extraerDominio(url);
+        if (!dominio) {
+            throw new Error('Dominio no válido');
         }
+
+        // Mostrar mensaje de carga mientras se realiza la solicitud
+        document.getElementById('ipAddress').innerText = "Cargando IP...";
+
+        // Solicitar la IP a la API utilizando HTTPS
+        fetch(`https://ip-api.com/json/${dominio}?fields=query,city,country`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta de la API');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.query) {
+                    const ip = data.query;
+                    const ciudad = data.city || 'Desconocida';
+                    const pais = data.country || 'Desconocido';
+                    // Mostrar la IP y la ubicación de manera profesional
+                    document.getElementById('ipAddress').innerText = `IP: ${ip} (Ubicación: ${ciudad}, ${pais})`;
+                } else {
+                    document.getElementById('ipAddress').innerText = "IP no encontrada o inválida.";
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener IP:', error);
+                document.getElementById('ipAddress').innerText = `❌ Error al obtener IP: ${error.message}`;
+            });
+    } catch (error) {
+        console.error('Error en la extracción del dominio:', error);
+        document.getElementById('ipAddress').innerText = "❌ URL no válida para obtener la IP.";
+    }
+}
+
 
         // Limpiar formulario
         function limpiarFormulario() {
-            document.getElementById('urlInput').value = '';
-            document.getElementById('result').innerText = 'Los resultados del análisis aparecerán aquí...';
-            document.getElementById('ipAddress').innerText = 'IP: Cargando...';
-        }
+    // Comprobamos que los elementos existen antes de interactuar con ellos
+    const urlInput = document.getElementById('urlInput');
+    const result = document.getElementById('result');
+    const ipAddress = document.getElementById('ipAddress');
+    
+    // Verificar si los elementos del DOM son válidos antes de actualizarlos
+    if (urlInput && result && ipAddress) {
+        // Limpiar los valores de los campos
+        urlInput.value = '';  // Limpiar campo de URL
+        result.innerText = 'Los resultados del análisis aparecerán aquí...';  // Restablecer resultados al valor inicial
+        ipAddress.innerText = 'IP: Cargando...';  // Restablecer el texto de IP al valor predeterminado
+    } else {
+        console.error("Uno o más elementos no se han encontrado en el DOM.");
+    }
+}
+
 
         // Descargar los resultados
         function descargarResultado() {
-            const contenido = document.getElementById('result').innerText;
-            const blob = new Blob([contenido], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'resultado_analisis.txt';
-            link.click();
-        }
+    const contenido = document.getElementById('result').innerText.trim();
+
+    // Verificar si hay contenido para descargar
+    if (!contenido) {
+        return; // Si no hay contenido, no hacemos nada
+    }
+
+    // Crear un Blob con el contenido
+    const blob = new Blob([contenido], { type: 'text/plain' });
+
+    // Crear un enlace para descargar el archivo
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'resultado_analisis.txt';
+
+    // Iniciar la descarga
+    link.click();
+
+    // Liberar el objeto URL creado
+    URL.revokeObjectURL(link.href);
+}
+
 
         // Actualizar historial
         function actualizarHistorial(url, resultados) {
-            const historyDiv = document.getElementById('history');
-            const nuevoElemento = document.createElement('div');
-            nuevoElemento.classList.add('history-item');
-            nuevoElemento.textContent = `${url} - ${new Date().toLocaleString()}`;
-            historyDiv.appendChild(nuevoElemento);
-        }
-    </script>
+    // Validar que los parámetros sean correctos
+    if (!url || !resultados) {
+        console.warn('URL o resultados no proporcionados.');
+        return; // Evitar actualización si no hay información suficiente
+    }
+
+    // Evitar que las URLs o resultados contengan contenido malicioso
+    const urlValida = validarURL(url);
+    if (!urlValida) {
+        console.warn('URL maliciosa detectada, no se añadirá al historial.');
+        return; // Si la URL no es válida, detener el proceso
+    }
+
+    const historyDiv = document.getElementById('history');
+
+    // Evitar la inserción de elementos duplicados
+    const historialExistente = Array.from(historyDiv.children);
+    if (historialExistente.some(item => item.textContent.includes(url))) {
+        console.log('Esta URL ya está en el historial.');
+        return;
+    }
+
+    // Crear un nuevo elemento del historial de manera segura
+    const nuevoElemento = document.createElement('div');
+    nuevoElemento.classList.add('history-item');
+
+    // Formatear la fecha de manera más legible
+    const fecha = new Date().toLocaleString();
+
+    // Sanitizar los resultados antes de mostrarlos (evitar HTML, usar solo texto)
+    const resultadosSanitizados = sanitizeText(resultados);
+
+    // Crear el contenido con datos seguros
+    nuevoElemento.innerHTML = `
+        <strong>URL:</strong> ${escapeHTML(url)} <br>
+        <strong>Fecha:</strong> ${fecha} <br>
+        <strong>Resultados:</strong> ${resultadosSanitizados.slice(0, 100)}... <br> 
+    `;
+
+    // Añadir el nuevo elemento al historial
+    historyDiv.appendChild(nuevoElemento);
+
+    // Guardar en localStorage de forma segura
+    guardarHistorialEnStorage(url, fecha, resultados);
+}
+
+// Función para validar URL (evitar inyecciones maliciosas)
+function validarURL(url) {
+    try {
+        // Usar URL API para comprobar si la URL es válida
+        new URL(url);
+        return true;
+    } catch (e) {
+        return false; // URL inválida
+    }
+}
+
+// Función para sanitizar texto y evitar inserciones maliciosas (XSS)
+function sanitizeText(texto) {
+    return texto.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&/g, '&amp;');
+}
+
+// Función para escapar texto HTML antes de mostrarlo en la página
+function escapeHTML(texto) {
+    return texto.replace(/[&<>"']/g, function (match) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+        };
+        return map[match];
+    });
+}
+
+// Función para guardar el historial en el almacenamiento local (con datos escapados y sanitizados)
+function actualizarHistorial(url, resultados) {
+    if (!url || !resultados) {
+        console.warn('URL o resultados no proporcionados.');
+        return; // Evitar la actualización si no hay información suficiente
+    }
+
+    const historyDiv = document.getElementById('history');
+
+    // Verificar si la URL ya está en el historial para evitar duplicados
+    const historialExistente = Array.from(historyDiv.children);
+    if (historialExistente.some(item => item.textContent.includes(url))) {
+        console.log('Esta URL ya está en el historial.');
+        return; // Si ya existe, no agregarla nuevamente
+    }
+
+    // Crear un nuevo elemento del historial
+    const nuevoElemento = document.createElement('div');
+    nuevoElemento.classList.add('history-item');
+
+    // Formatear la fecha de manera más legible
+    const fecha = new Date().toLocaleString();
+
+    // Añadir la URL y la fecha de análisis
+    nuevoElemento.innerHTML = `
+        <strong>URL:</strong> ${url} <br>
+        <strong>Fecha:</strong> ${fecha} <br>
+        <strong>Resultados:</strong> ${resultados.slice(0, 100)}... <br> 
+    `; // Solo mostrar los primeros 100 caracteres de los resultados
+
+    // Añadir el nuevo elemento al historial
+    historyDiv.appendChild(nuevoElemento);
+
+    // Guardar en el localStorage para persistencia (opcional)
+    guardarHistorialEnStorage(url, fecha, resultados);
+}
+
+function guardarHistorialEnStorage(url, fecha, resultados) {
+    // Recuperar historial almacenado (si existe)
+    const historialGuardado = JSON.parse(localStorage.getItem('historial')) || [];
+
+    // Agregar el nuevo análisis al historial
+    historialGuardado.push({ url, fecha, resultados });
+
+    // Limitar la cantidad de elementos guardados (opcional)
+    if (historialGuardado.length > 10) {
+        historialGuardado.shift(); // Eliminar el análisis más antiguo si supera el límite
+    }
+
+    // Guardar de nuevo en localStorage
+    localStorage.setItem('historial', JSON.stringify(historialGuardado));
+}
+
+</script>
 
 </body>
 </html>
